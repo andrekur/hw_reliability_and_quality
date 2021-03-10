@@ -1,4 +1,5 @@
 import random
+from functools import lru_cache
 
 
 def distance_levin_wiki(a, b):
@@ -20,23 +21,22 @@ def distance_levin_wiki(a, b):
 
     return current_row[n]
 
+
 def distance_levin_rec(a, b):
+    @lru_cache(maxsize=len(a) * len(b))
     def recursive(i, j):
         if i == 0 or j == 0:
-            # если одна из строк пустая, то расстояние до другой строки - ее длина
-            # т.е. n вставок
             return max(i, j)
         elif a[i - 1] == b[j - 1]:
-            # если оба последних символов одинаковые, то съедаем их оба, не меняя расстояние
             return recursive(i - 1, j - 1)
         else:
-            # иначе выбираем минимальный вариант из трех
             return 1 + min(
-                recursive(i, j - 1),  # удаление
-                recursive(i - 1, j),   # вставка
-                recursive(i - 1, j - 1)  # замена
+                recursive(i, j - 1),
+                recursive(i - 1, j),
+                recursive(i - 1, j - 1)
             )
     return recursive(len(a), len(b))
+
 
 def generate_string(len_s):
     s = ''
@@ -50,5 +50,5 @@ def generate_string(len_s):
                 )
             )
         )
-    
+
     return s

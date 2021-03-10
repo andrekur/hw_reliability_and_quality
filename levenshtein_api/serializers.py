@@ -8,6 +8,7 @@ class Levin():
         self.s2 = s2
         self.time = time
 
+
 class LevinSerializer(serializers.Serializer):
     levin_len = serializers.IntegerField()
     s1 = serializers.CharField()

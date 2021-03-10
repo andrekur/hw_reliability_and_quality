@@ -8,6 +8,7 @@ from .serializers import *
 from .functions import *
 
 import time
+import sys
 
 
 class API_Levin(APIView):
@@ -16,7 +17,7 @@ class API_Levin(APIView):
         s2 = request.GET.get('s2', None)
 
         if request.GET.get('gen', False):
-            len_s = request.GET.get('len', 10000)
+            len_s = request.GET.get('len', 1000)
 
             s1 = generate_string(len_s)
             s2 = generate_string(len_s)
@@ -34,6 +35,7 @@ class API_Levin(APIView):
         if str(func) == 'wiki':
             levin_len = distance_levin_wiki(s1, s2)
         elif str(func) == 'rec':
+            sys.setrecursionlimit(10000)
             levin_len = distance_levin_rec(s1, s2)
         else:
             content = {'info': 'function not found'}
